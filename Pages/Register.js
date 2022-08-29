@@ -10,22 +10,18 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-
-export default function Clientlogin() {
+export default function ClientSignup() {
     const navigation = useNavigation();
+    const RedirectToLogin = () => {
+        navigation.navigate("Login");
+    };
 
-      const RedirectToRegister = () => {
-        navigation.navigate("Register");
-      };
-      const RedirectToHome = () => {
-        navigation.navigate("Home");
-      };
     return (
         <ImageBackground
             source={
                 "https://goldenfrysedgley.co.uk/admin2/img/photos/bg1.webp"
             }
-            style={{ height: "100%", width: "100%" }}
+            style={{ height: "100vh", width: "100%" }}
         >
             <View
                 style={{
@@ -36,46 +32,56 @@ export default function Clientlogin() {
                     height: "100%",
                 }}
             >
-                <Card style={{ padding: "40px", borderRadius: "20px", width: "90%", height: '70vh' }}>
-                <ScrollView>
+                <Card style={{ padding: "40px", borderRadius: "20px", width: "90%", height: "90vh" }}>
+                    <ScrollView>
                     <Image
-                        style={{ height: "50%", width: "100%", marginBottom: '20px' }}
+                        style={{ height: "35%", width: "100%", marginBottom: '20px' }}
                         source={'https://www.happyspizzaburger.co.uk/uploads/restorants/198031cc-1875-4d54-8945-8135a96f353a_large.jpg'}
                     />
                     <Text
                         style={{
                             fontWeight: "bold",
-                            textAlign: "center",
+                            textAlign: "start",
                             marginBottom: "20px",
                             fontSize: "20px",
                         }}
                     >
-                        WELCOME BACK
+                        Create an Account
                     </Text>
                     <View>
                         <TextInput
+                            placeholder="Name"
+                            style={styles.Textfields}
+                        ></TextInput>
+                        <TextInput
                             placeholder="Email"
+                            style={styles.Textfields}
+                        ></TextInput>
+                        <TextInput
+                            placeholder="Phone"
                             style={styles.Textfields}
                         ></TextInput>
                         <TextInput
                             placeholder="Password"
                             style={styles.Textfields}
                         ></TextInput>
-
+                        <TextInput
+                            placeholder="Confirm Password"
+                            style={styles.Textfields}
+                        ></TextInput>
                         <Button
                             style={{ marginBottom: "20px", backgroundColor: "#f87c28" }}
                             mode="contained"
-                            onPress={() => RedirectToHome()}
                         >
-                            Login
+                            Signup
                         </Button>
-                    </View>
-                    <Text style={{ textAlign: "center", marginBottom: "10px" }}>
-                        Don't have an account?
+                        <Text style={{ textAlign: "center", marginBottom: "10px" }}>
+                        Already have an account?
                     </Text>
-                    <Button color="grey" onPress={() => RedirectToRegister()}>
-                        Sign Up
+                    <Button color="grey" onPress={() => RedirectToLogin()}>
+                        Login
                     </Button>
+                    </View>
                     </ScrollView>
                 </Card>
             </View>
@@ -84,16 +90,6 @@ export default function Clientlogin() {
 }
 
 const styles = StyleSheet.create({
-    socialbuttonfb: {
-        borderRadius: "20px",
-        backgroundColor: "#4267B2",
-        marginBottom: "20px",
-    },
-    socialbuttontw: {
-        borderRadius: "20px",
-        backgroundColor: "#1DA1F2",
-        marginBottom: "20px",
-    },
     Textfields: {
         borderRadius: "20px",
         borderColor: "grey",
