@@ -2,9 +2,15 @@ import { Button, Card, IconButton, Searchbar } from 'react-native-paper';
 import { Text, View, ImageBackground, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
+import  { useState }  from 'react'
 
 export default function DetailPage() {
-
+    const [counter, setCounter] = useState(1);
+    const incrementCounter = () => setCounter(counter + 1);
+    let decrementCounter = () => setCounter(counter - 1);
+    if (counter < 1) {
+        decrementCounter = () => setCounter(1);
+    }
     const navigation = useNavigation();
 
     return (
@@ -18,10 +24,23 @@ export default function DetailPage() {
                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left' }}>
                             <Text style={{ fontSize: '24px', fontWeight: 'bold', paddingLeft: '10px' }}>Steak Burger</Text>
-                        </View>
-                        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left' }}>
-                            <Text style={{ fontSize: '20px', fontWeight: 'bold', paddingRight: '10px', color: 'grey' }}>1000 Rs</Text>
+                            <Text style={{ fontSize: '20px', fontWeight: 'bold', paddingLeft: '10px', color: 'grey' }}>1000 Rs</Text>
 
+                        </View>
+                        <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'right' }}>
+                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                                <IconButton
+                                    icon="plus-circle"
+                                    size={24}
+                                    onPress={incrementCounter}
+                                />
+                                <Text style={{ fontSize: '24px', fontWeight: 'bold' }}>{counter}</Text>
+                                <IconButton
+                                    icon="minus-circle"
+                                    size={24}
+                                    onPress={decrementCounter}
+                                />
+                            </View>
                         </View>
 
                     </View>
