@@ -1,5 +1,6 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Cart from './Pages/Cart';
 import Home from './Pages/Home';
 import Clientlogin from './Pages/Login';
 import DetailPage from './Pages/ProductDetailPage';
@@ -45,6 +46,15 @@ export default function App() {
           options={{ header: () => null }}
           name="Detail-Page"
           component={DetailPage}
+
+        />
+        <Stack.Screen
+          screenOptions={{
+            headerShown: false
+          }}
+          options={{ header: () => null }}
+          name="Cart"
+          component={Cart}
 
         />
       </Stack.Navigator>

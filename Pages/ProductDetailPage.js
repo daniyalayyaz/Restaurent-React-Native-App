@@ -12,6 +12,9 @@ export default function DetailPage() {
         decrementCounter = () => setCounter(1);
     }
     const navigation = useNavigation();
+    const RedirectToCart = () => {
+        navigation.navigate("Cart");
+    };
 
     return (
         <SafeAreaView>
@@ -48,7 +51,7 @@ export default function DetailPage() {
                     <Text style={{ fontSize: '16px', color: 'grey', padding: '20px', textAlign: 'justify' }}>"Juicy, big, loaded with toppings of my choice." "High quality beef medium to well with cheese and bacon on a multigrain bun." "A huge single or triple burger with all the fixings, cheese, lettuce, tomato, onions and special sauce or mayonnaise!"</Text>
                 </View>
                 <View style={{ margin: '20px' }}>
-                    <Button icon="cart" mode="contained" style={{ backgroundColor: '#f87c28' }} onPress={() => console.log('Pressed')}>
+                    <Button icon="cart" mode="contained" style={{ backgroundColor: '#f87c28' }} onPress={RedirectToCart}>
                         Add to cart
                     </Button>
                 </View>
