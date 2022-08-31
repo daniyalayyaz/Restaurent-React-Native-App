@@ -1,9 +1,11 @@
 import { Button, Card, IconButton, Searchbar } from 'react-native-paper';
-import { Text, View, ImageBackground, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
+import { Text, View, Dimensions, SafeAreaView, FlatList, TouchableOpacity, Image, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 
 export default function Home() {
+    var width = Dimensions.get('window').width;
+    var height = Dimensions.get('window').height;
     const [searchQuery, setSearchQuery] = React.useState('');
     const onChangeSearch = query => setSearchQuery(query);
     const DATA = [
@@ -81,14 +83,14 @@ export default function Home() {
         navigation.navigate('Trending')
     }
     return (
-        <SafeAreaView>
-            <View style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: 'white', overflow: 'hidden' }}>
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: '20px' }}>
+        <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
+            <View style={{ display: 'flex', flexDirection: 'column', height: height, backgroundColor: 'white', overflow: 'hidden' }}>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: 20 }}>
                     <Image
-                        style={{ height: "50px", width: "50px" }}
-                        source={'https://www.happyspizzaburger.co.uk/uploads/restorants/198031cc-1875-4d54-8945-8135a96f353a_large.jpg'}
+                        style={{ height: 50, width: 50 }}
+                        source={{ uri: 'https://www.happyspizzaburger.co.uk/uploads/restorants/198031cc-1875-4d54-8945-8135a96f353a_large.jpg' }}
                     />
-                    <View style={{ backgroundColor: '#f8f4fc', borderRadius: '10px' }}>
+                    <View style={{ backgroundColor: '#f8f4fc', borderRadius: 10 }}>
                         <IconButton
                             icon="cart"
                             size={24}
@@ -97,7 +99,7 @@ export default function Home() {
                     </View>
 
                 </View>
-                <View style={{padding: '20px'}}>
+                <View style={{ padding: 20 }}>
                     <Searchbar
                         placeholder="Search"
                         onChangeText={onChangeSearch}
@@ -105,14 +107,14 @@ export default function Home() {
                     />
                 </View>
                 <View>
-                    <Text style={{ fontWeight: 'bold', fontSize: '22px', color: 'black', margin: '20px' }}>Categories</Text>
+                    <Text style={{ fontWeight: 'bold', fontSize: 22, color: 'black', margin: 20 }}>Categories</Text>
                 </View>
                 <View>
                     <FlatList
                         data={DATA}
-                        horizontal='true'
+                        horizontal
                         renderItem={({ item, index }) => (
-                            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: '10px', backgroundColor: '#f8f4fc', padding: '20px', borderRadius: '12px' }}>
+                            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 10, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 12 }}>
                                 <IconButton
                                     icon={item.icon}
                                     iconColor='orange'
@@ -124,20 +126,16 @@ export default function Home() {
                         )}
                     />
                 </View>
-                <View>
+                <View style={{ flex: 1 }}>
                     <FlatList
                         data={GridData}
                         numColumns={2}
-                        showsHorizontalScrollIndicator={false}
-                        automaticallyAdjustContentInsets={true}
-                        removeClippedSubviews={true}
-                        enableEmptySections={false}
                         renderItem={({ item, index }) => (
                             <TouchableOpacity onPress={move}>
                                 <Card>
-                                    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: '10px', backgroundColor: '#f8f4fc', padding: '20px', borderRadius: '12px' }}>
-                                        <Image source={item.img} style={{ height: '20vh', width: '35vw', borderRadius: '10px' }} />
-                                        <Text style={{ fontWeight: 'bold', fontSize: '20px', color: 'black' }}>{item.title}</Text>
+                                    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 10, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 12 }}>
+                                        <Image source={{ uri: item.img }} style={{ height: height / 5, width: width / 3, borderRadius: 10 }} />
+                                        <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{item.title}</Text>
                                         <Text>{item.price}</Text>
                                     </View>
                                 </Card>

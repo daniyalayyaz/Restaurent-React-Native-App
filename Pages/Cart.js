@@ -1,5 +1,5 @@
 import { Button, Card, IconButton, Searchbar } from 'react-native-paper';
-import { Text, View, ImageBackground, SafeAreaView, FlatList, TouchableOpacity, Image } from 'react-native';
+import { Text, View, Dimensions, SafeAreaView, FlatList, Platform, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react'
@@ -42,6 +42,8 @@ export default function Cart() {
 
         },
     ];
+    var width = Dimensions.get('window').width;
+    var height = Dimensions.get('window').height;
     const [counter, setCounter] = useState(1);
     const incrementCounter = () => setCounter(counter + 1);
     let decrementCounter = () => setCounter(counter - 1);
@@ -51,38 +53,38 @@ export default function Cart() {
     const navigation = useNavigation();
 
     return (
-        <SafeAreaView>
-            <View style={{ display: 'flex', flexDirection: 'column', height: '100vh', justifyContent: 'space-between', backgroundColor: 'white', overflow: 'hidden' }}>
-                <View style={{padding: '20px'}}>
-                    <Text style={{ fontSize: '24px', fontWeight: 'bold'}}>Your Cart</Text>
-                    <Text style={{ fontSize: '18px', fontWeight: 'bold', color: 'grey'}}>Items</Text>
+        <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
+            <View style={{ display: 'flex', flexDirection: 'column', height: height, justifyContent: 'space-between', backgroundColor: 'white', overflow: 'hidden' }}>
+                <View style={{ padding: 20 }}>
+                    <Text style={{ fontSize: 24, fontWeight: 'bold' }}>Your Cart</Text>
+                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'grey' }}>Items</Text>
                 </View>
                 <FlatList
                     data={DATA}
                     renderItem={({ item, index }) => (
                         <View>
 
-                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: '10px' }}>
-                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'left' }}>
+                            <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', padding: 10 }}>
+                                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
                                     <Image
-                                        style={{ height: "48px", width: "48px", borderRadius: '10px' }}
-                                        source={item.img}
+                                        style={{ height: 48, width: 48, borderRadius: 10 }}
+                                        source={{ uri: item.img }}
                                     />
-                                    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'left' }}>
+                                    <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-start' }}>
 
-                                        <Text style={{ fontSize: '16px', fontWeight: 'bold', paddingLeft: '10px' }}>{item.title}</Text>
-                                        <Text style={{ fontSize: '12px', fontWeight: 'bold', paddingLeft: '10px', color: 'grey' }}>{item.price}</Text>
+                                        <Text style={{ fontSize: 16, fontWeight: 'bold', paddingLeft: 10 }}>{item.title}</Text>
+                                        <Text style={{ fontSize: 12, fontWeight: 'bold', paddingLeft: 10, color: 'grey' }}>{item.price}</Text>
 
                                     </View>
                                 </View>
-                                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'right' }}>
+                                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
                                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                                         <IconButton
                                             icon="plus-circle"
                                             size={24}
                                             onPress={incrementCounter}
                                         />
-                                        <Text style={{ fontSize: '24px', fontWeight: 'bold' }}>{counter}</Text>
+                                        <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{counter}</Text>
                                         <IconButton
                                             icon="minus-circle"
                                             size={24}
@@ -103,11 +105,11 @@ export default function Cart() {
                     )}
                 />
 
-                <View style={{ margin: '20px' }}>
-                    <Card style={{margin: '20px', backgroundColor: '#f8f4fc', padding: '20px', borderRadius: '10px'}}>
-                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                            <Text style={{ fontSize: '16px', fontWeight: 'bold'}}>Total</Text>
-                            <Text style={{ fontSize: '16px', fontWeight: 'bold'}}>600</Text>
+                <View style={{ margin: 20 }}>
+                    <Card style={{ margin: 20, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 10 }}>
+                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>Total</Text>
+                            <Text style={{ fontSize: 16, fontWeight: 'bold' }}>600</Text>
                         </View>
                     </Card>
                     <Button icon="cart-check" mode="contained" style={{ backgroundColor: '#f87c28' }} onPress={() => console.log('Pressed')}>

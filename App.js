@@ -30,6 +30,7 @@ export default function App() {
           component={ClientSignup}
 
         />
+
         <Stack.Screen
           screenOptions={{
             headerShown: false
@@ -39,6 +40,7 @@ export default function App() {
           component={Home}
 
         />
+
         <Stack.Screen
           screenOptions={{
             headerShown: false
@@ -48,6 +50,7 @@ export default function App() {
           component={DetailPage}
 
         />
+
         <Stack.Screen
           screenOptions={{
             headerShown: false
