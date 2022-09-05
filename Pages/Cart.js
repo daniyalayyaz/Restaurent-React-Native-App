@@ -51,6 +51,9 @@ export default function Cart() {
         decrementCounter = () => setCounter(1);
     }
     const navigation = useNavigation();
+    const RedirectToCheckout = () => {
+        navigation.navigate('Checkout')
+    }
 
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
@@ -112,7 +115,7 @@ export default function Cart() {
                             <Text style={{ fontSize: 16, fontWeight: 'bold' }}>600</Text>
                         </View>
                     </Card>
-                    <Button icon="cart-check" mode="contained" style={{ backgroundColor: '#f87c28' }} onPress={() => console.log('Pressed')}>
+                    <Button icon="cart-check" mode="contained" style={{ backgroundColor: '#f87c28' }} onPress={RedirectToCheckout}>
                         Checkout
                     </Button>
                 </View>
