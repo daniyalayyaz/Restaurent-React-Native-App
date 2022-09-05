@@ -1,5 +1,5 @@
 import { RadioButton, Button, Divider, Card, Dialog, Provider, Portal } from 'react-native-paper';
-import { Text, View, Dimensions, SafeAreaView, FlatList, Platform, TextInput, ScrollView } from 'react-native';
+import { Text, View, Dimensions, SafeAreaView, Image, Platform, TextInput, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import { useState } from 'react'
@@ -13,6 +13,10 @@ export default function Checkout() {
     const [show, setShow] = useState(false);
     const visibleModal = () => setShow(true);
     const unvisibleDialog = () => setShow(false);
+    const [confirmation, setConfirmation] = useState(false);
+    const visibleconfirmation = () => setConfirmation(true);
+    const unvisibleconfirmation = () => setConfirmation(false);
+
 
 
     var width = Dimensions.get('window').width;
@@ -238,10 +242,24 @@ export default function Checkout() {
                     <View style={{ paddingLeft: 20, paddingRight: 20 }}>
                         <Button
                             style={{ marginBottom: 20, backgroundColor: "#f87c28", marginTop: 20 }}
-                            mode="contained"                                >
+                            mode="contained"
+                            onPress={visibleconfirmation}>
                             Place Order
                         </Button>
                     </View>
+                    <Portal>
+                            <Dialog visible={confirmation} onDismiss={unvisibleconfirmation}>
+                                <Dialog.Content>
+                                    <View style={{display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+                                <Image
+                                    style={{ height: 100, width: 100, marginBottom: 20 }}
+                                    source={require("../assets/success.gif")}
+                                />
+                                <Text style={{fontWeight: 'bold'}}>Your Order has been taken</Text>
+                                </View>
+                                </Dialog.Content>
+                            </Dialog>
+                        </Portal>
                 </View>
             </SafeAreaView>
         </Provider>
