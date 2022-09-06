@@ -12,22 +12,27 @@ export default function Home() {
         {
             icon: 'food',
             title: 'Fast Food',
+            tab: GridData
         },
         {
             icon: 'food-apple',
             title: 'Fruits',
+            tab: []
         },
         {
             icon: 'glass-cocktail',
             title: 'Juices',
+            tab: Juices
         },
         {
             icon: 'coffee',
             title: 'Hot Beverages',
+            tab: []
         },
         {
             icon: 'hamburger',
             title: 'Burgers',
+            tab: []
         },
     ];
     const GridData = [
@@ -67,20 +72,36 @@ export default function Home() {
 
         },
     ];
+    const Juices = [
+        {
+            img: 'https://img.freepik.com/free-photo/fresh-orange-juice_144627-18386.jpg?w=2000',
+            title: 'Orange Juice',
+            price: '100 Rs'
+        },
+        {
+            img: 'https://static.toiimg.com/photo/75679650.cms',
+            title: 'Cocktail',
+            price: '100 Rs'
 
+        },
+        {
+            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvI51zKzj99XWVd5PLptQjXrU_pcysHuV4Ng&usqp=CAU',
+            title: 'Smoothies',
+            price: '100 Rs'
+
+        },
+    ];
+    const [currenttab, setCurrenttab] = React.useState(GridData);
     const navigation = useNavigation();
 
-    const move = () => {
+    const RedirectToDetailPage = () => {
         navigation.navigate('Detail-Page')
     }
-    const moves = () => {
-        navigation.navigate('QuizCategory')
+    const RedirectToCart = () => {
+        navigation.navigate('Cart')
     }
-    const movess = () => {
-        navigation.navigate('Your Bookings')
-    }
-    const mov = () => {
-        navigation.navigate('Trending')
+    const RedirectToProfile = () => {
+        navigation.navigate('Profile')
     }
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
@@ -90,12 +111,21 @@ export default function Home() {
                         style={{ height: 50, width: 50 }}
                         source={{ uri: 'https://www.happyspizzaburger.co.uk/uploads/restorants/198031cc-1875-4d54-8945-8135a96f353a_large.jpg' }}
                     />
-                    <View style={{ backgroundColor: '#f8f4fc', borderRadius: 10 }}>
-                        <IconButton
-                            icon="cart"
-                            size={24}
-                            onPress={() => console.log('Pressed')}
-                        />
+                    <View style={{ display: 'flex', flexDirection: 'row' }}>
+                        <View style={{ backgroundColor: '#f8f4fc', borderRadius: 10, marginRight: 10 }}>
+                            <IconButton
+                                icon="cog"
+                                size={24}
+                                onPress={RedirectToProfile}
+                            />
+                        </View>
+                        <View style={{ backgroundColor: '#f8f4fc', borderRadius: 10 }}>
+                            <IconButton
+                                icon="cart"
+                                size={24}
+                                onPress={RedirectToCart}
+                            />
+                        </View>
                     </View>
 
                 </View>
@@ -114,24 +144,25 @@ export default function Home() {
                         data={DATA}
                         horizontal
                         renderItem={({ item, index }) => (
-                            <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 10, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 12 }}>
-                                <IconButton
-                                    icon={item.icon}
-                                    iconColor='orange'
-                                    size={20}
-                                    onPress={() => console.log('Pressed')}
-                                />
-                                <Text>{item.title}</Text>
-                            </View>
+                            <TouchableOpacity onPress={() => setCurrenttab({currenttab: item.tab})}>
+                                <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 10, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 12 }}>
+                                    <IconButton
+                                        icon={item.icon}
+                                        iconColor='orange'
+                                        size={20}
+                                        />
+                                    <Text>{item.title}</Text>
+                                </View>
+                            </TouchableOpacity>
                         )}
                     />
                 </View>
                 <View style={{ flex: 1 }}>
                     <FlatList
-                        data={GridData}
+                        data={currenttab}
                         numColumns={2}
                         renderItem={({ item, index }) => (
-                            <TouchableOpacity onPress={move}>
+                            <TouchableOpacity onPress={RedirectToDetailPage}>
                                 <Card>
                                     <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 10, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 12 }}>
                                         <Image source={{ uri: item.img }} style={{ height: height / 5, width: width / 3, borderRadius: 10 }} />
