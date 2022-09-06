@@ -12,7 +12,43 @@ export default function Home() {
         {
             icon: 'food',
             title: 'Fast Food',
-            tab: GridData
+            tab: [
+                {
+                    img: 'https://propakistani.pk/wp-content/uploads/2022/04/front-view-tasty-meat-burger-wit.jpg',
+                    title: 'Steak Burger',
+                    price: '100 Rs'
+                },
+                {
+                    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZxhqD_7ZHYjpxEzwYLu7srgRx4wr86s6kVQ&usqp=CAU',
+                    title: 'Chicken Burger',
+                    price: '100 Rs'
+        
+                },
+                {
+                    img: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/6/1/2/FNM_070112-Copy-That-Almost-Famous-Animal-Style-Burger-Recipe_s4x3.jpg.rend.hgtvcom.616.462.suffix/1382541460839.jpeg',
+                    title: 'Beef Burger',
+                    price: '100 Rs'
+        
+                },
+                {
+                    img: 'https://twisper.com/wp-content/uploads/2020/03/close-up-photo-of-burger-3915906-scaled.jpg',
+                    title: 'Wehshi Burger',
+                    price: '100 Rs'
+        
+                },
+                {
+                    img: 'https://www.unileverfoodsolutions.com.au/dam/global-ufs/mcos/anz/calcmenu/recipe/killer-recipes-update/beef-burger-with-deep-fried-bacon-and-thousand-island-dressing_main-header.jpg',
+                    title: 'Zinger Burger',
+                    price: '100 Rs'
+        
+                },
+                {
+                    img: 'https://www.tasteofhome.com/wp-content/uploads/2018/01/exps28800_UG143377D12_18_1b_RMS-8.jpg',
+                    title: 'Patty Burger',
+                    price: '100 Rs'
+        
+                },
+            ]
         },
         {
             icon: 'food-apple',
@@ -22,7 +58,25 @@ export default function Home() {
         {
             icon: 'glass-cocktail',
             title: 'Juices',
-            tab: Juices
+            tab: [
+                {
+                    img: 'https://img.freepik.com/free-photo/fresh-orange-juice_144627-18386.jpg?w=2000',
+                    title: 'Orange Juice',
+                    price: '100 Rs'
+                },
+                {
+                    img: 'https://static.toiimg.com/photo/75679650.cms',
+                    title: 'Cocktail',
+                    price: '100 Rs'
+
+                },
+                {
+                    img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvI51zKzj99XWVd5PLptQjXrU_pcysHuV4Ng&usqp=CAU',
+                    title: 'Smoothies',
+                    price: '100 Rs'
+
+                },
+            ]
         },
         {
             icon: 'coffee',
@@ -35,63 +89,7 @@ export default function Home() {
             tab: []
         },
     ];
-    const GridData = [
-        {
-            img: 'https://propakistani.pk/wp-content/uploads/2022/04/front-view-tasty-meat-burger-wit.jpg',
-            title: 'Steak Burger',
-            price: '100 Rs'
-        },
-        {
-            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZxhqD_7ZHYjpxEzwYLu7srgRx4wr86s6kVQ&usqp=CAU',
-            title: 'Chicken Burger',
-            price: '100 Rs'
-
-        },
-        {
-            img: 'https://food.fnr.sndimg.com/content/dam/images/food/fullset/2012/6/1/2/FNM_070112-Copy-That-Almost-Famous-Animal-Style-Burger-Recipe_s4x3.jpg.rend.hgtvcom.616.462.suffix/1382541460839.jpeg',
-            title: 'Beef Burger',
-            price: '100 Rs'
-
-        },
-        {
-            img: 'https://twisper.com/wp-content/uploads/2020/03/close-up-photo-of-burger-3915906-scaled.jpg',
-            title: 'Wehshi Burger',
-            price: '100 Rs'
-
-        },
-        {
-            img: 'https://www.unileverfoodsolutions.com.au/dam/global-ufs/mcos/anz/calcmenu/recipe/killer-recipes-update/beef-burger-with-deep-fried-bacon-and-thousand-island-dressing_main-header.jpg',
-            title: 'Zinger Burger',
-            price: '100 Rs'
-
-        },
-        {
-            img: 'https://www.tasteofhome.com/wp-content/uploads/2018/01/exps28800_UG143377D12_18_1b_RMS-8.jpg',
-            title: 'Patty Burger',
-            price: '100 Rs'
-
-        },
-    ];
-    const Juices = [
-        {
-            img: 'https://img.freepik.com/free-photo/fresh-orange-juice_144627-18386.jpg?w=2000',
-            title: 'Orange Juice',
-            price: '100 Rs'
-        },
-        {
-            img: 'https://static.toiimg.com/photo/75679650.cms',
-            title: 'Cocktail',
-            price: '100 Rs'
-
-        },
-        {
-            img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTvI51zKzj99XWVd5PLptQjXrU_pcysHuV4Ng&usqp=CAU',
-            title: 'Smoothies',
-            price: '100 Rs'
-
-        },
-    ];
-    const [currenttab, setCurrenttab] = React.useState(GridData);
+    const [currenttab, setCurrenttab] = React.useState(DATA[0].tab);
     const navigation = useNavigation();
 
     const RedirectToDetailPage = () => {
@@ -144,13 +142,13 @@ export default function Home() {
                         data={DATA}
                         horizontal
                         renderItem={({ item, index }) => (
-                            <TouchableOpacity key={item.key} onPress={() => setCurrenttab({currenttab: item.tab})}>
+                            <TouchableOpacity key={item.key} onPress={() => setCurrenttab(item.tab)}>
                                 <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 10, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 12 }}>
                                     <IconButton
                                         icon={item.icon}
                                         iconColor='orange'
                                         size={20}
-                                        />
+                                    />
                                     <Text>{item.title}</Text>
                                 </View>
                             </TouchableOpacity>
@@ -163,13 +161,11 @@ export default function Home() {
                         numColumns={2}
                         renderItem={({ item, index }) => (
                             <TouchableOpacity onPress={RedirectToDetailPage}>
-                                <Card>
                                     <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 10, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 12 }}>
                                         <Image source={{ uri: item.img }} style={{ height: height / 5, width: width / 3, borderRadius: 10 }} />
                                         <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{item.title}</Text>
                                         <Text>{item.price}</Text>
                                     </View>
-                                </Card>
                             </TouchableOpacity>
                         )}
                     />
