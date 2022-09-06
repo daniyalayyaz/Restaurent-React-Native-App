@@ -67,9 +67,8 @@ export default function Profile() {
                 </Card>
                 {settingmenu.map((idx, index) => (
                     <TouchableOpacity onPress={idx.path
-                }>
+                } key={idx.key}>
                 <List.Item
-                    key={index}
                     title={idx.title}
                     left={props => <List.Icon {...props} icon={idx.icon} color='black' />}
                 />

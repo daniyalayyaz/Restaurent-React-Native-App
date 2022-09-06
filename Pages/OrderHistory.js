@@ -54,9 +54,8 @@ export default function OrderHistory() {
                             shadowOpacity: 0.5,
                             shadowRadius: 2,
                             elevation: 7,
-                        }}>
+                        }} key={idx.key}>
                             <List.Item
-                                key={index}
                                 title={<Text style={{ fontSize: 16, fontWeight: 'bold' }}>{idx.title}</Text>}
                                 left={props => <Image source={{ uri: idx.img }} {...props} style={{ height: 48, width: 48, borderRadius: 10 }}></Image>}
                                 description={props => <Text {...props} style={{ fontSize: 14, fontWeight: 'bold', color: 'grey' }}>{idx.price}</Text>}

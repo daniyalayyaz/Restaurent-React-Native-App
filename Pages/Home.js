@@ -144,7 +144,7 @@ export default function Home() {
                         data={DATA}
                         horizontal
                         renderItem={({ item, index }) => (
-                            <TouchableOpacity onPress={() => setCurrenttab({currenttab: item.tab})}>
+                            <TouchableOpacity key={item.key} onPress={() => setCurrenttab({currenttab: item.tab})}>
                                 <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 10, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 12 }}>
                                     <IconButton
                                         icon={item.icon}
