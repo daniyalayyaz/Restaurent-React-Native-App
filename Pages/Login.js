@@ -12,12 +12,15 @@ import {
     SafeAreaView
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from 'react';
 
 
 export default function Clientlogin() {
     var width = Dimensions.get('window').width;
     var height = Dimensions.get('window').height;
     const navigation = useNavigation();
+    const [email, setemail] = useState('');
+    const [password, setpassword] = useState('');
 
     const RedirectToRegister = () => {
         navigation.navigate("Register");
@@ -25,6 +28,45 @@ export default function Clientlogin() {
     const RedirectToHome = () => {
         navigation.navigate("Home");
     };
+    async function Login(e) {
+        e.preventDefault()
+        const user = {
+            email,
+            password,
+        }
+
+        try {
+            // setloading(true)
+            const result = (await axios.post('https://apinodejs.creativeparkingsolutions.com/api/user/login', user)).data;
+            console.log(result.data)
+
+            AsyncStorage.setItem('currentuser', JSON.stringify(result.data));
+
+            if (result.data[0].customer_Id != null) {
+                AsyncStorage.setItem('status', 'true');
+            }
+            else {
+                AsyncStorage.setItem('status', 'false');
+            }
+
+
+            //   toast.success("Login Successfull")
+            setInterval(() => {
+                navigation.navigate("Home");
+            }, 2000);
+            // setloading(false)
+
+            setemail('');
+            setpassword('');
+
+        }
+        catch (error) {
+            console.log(error);
+            //   toast.warn("Invalid credentials")
+            // setloading(false)
+        }
+
+    }
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
             <ImageBackground
@@ -69,16 +111,20 @@ export default function Clientlogin() {
                                 <TextInput
                                     placeholder="Email"
                                     style={styles.Textfields}
+                                    value={email}
+                                    onChange={(e) => { setemail(e.target.value) }}
                                 ></TextInput>
                                 <TextInput
                                     placeholder="Password"
                                     style={styles.Textfields}
+                                    value={password}
+                                    onChange={(e) => { setpassword(e.target.value) }}
                                 ></TextInput>
 
                                 <Button
                                     style={{ marginBottom: 20, backgroundColor: "#f87c28" }}
                                     mode="contained"
-                                    onPress={() => RedirectToHome()}
+                                    onPress={() => Login()}
                                 >
                                     Login
                                 </Button>
