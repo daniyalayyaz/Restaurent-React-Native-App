@@ -12,14 +12,49 @@ import {
     SafeAreaView
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import React, { useState } from 'react';
+import axios from "axios";
 
 export default function ClientSignup() {
+    const [name, setname] = useState('');
+    const [email, setemail] = useState('');
+    const [number, setnumber] = useState('');
+    const [password, setpassword] = useState('');
+    const [cpassword, setcpassword] = useState('');
     var width = Dimensions.get('window').width;
     var height = Dimensions.get('window').height;
     const navigation = useNavigation();
     const RedirectToLogin = () => {
         navigation.navigate("Login");
     };
+
+    async function Register() {
+        if (password === cpassword) {
+            const user = {
+                name,
+                email,
+                number,
+                password,
+                cpassword
+            };
+
+            try {
+                const result = await axios.post("https://apinodejs.creativeparkingsolutions.com/api/user/register", user).data;
+                navigation.navigate("Login")
+                setname('')
+                setemail('')
+                setnumber('')
+                setpassword('')
+                setcpassword('')
+
+            } catch (error) {
+                alert(error);
+            }
+        }
+        else {
+            alert("Your password and Confirm password is not same")
+        }
+    }
 
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
@@ -65,26 +100,37 @@ export default function ClientSignup() {
                                 <TextInput
                                     placeholder="Name"
                                     style={styles.Textfields}
+                                    value={name}
+                                    onChangeText={(e) => { setname(e) }}
                                 ></TextInput>
                                 <TextInput
                                     placeholder="Email"
                                     style={styles.Textfields}
+                                    value={email}
+                                    onChangeText={(e) => { setemail(e) }}
                                 ></TextInput>
                                 <TextInput
                                     placeholder="Phone"
                                     style={styles.Textfields}
+                                    value={number}
+                                    onChangeText={(e) => { setnumber(e) }}
                                 ></TextInput>
                                 <TextInput
                                     placeholder="Password"
                                     style={styles.Textfields}
+                                    value={password}
+                                    onChangeText={(e) => { setpassword(e) }}
                                 ></TextInput>
                                 <TextInput
                                     placeholder="Confirm Password"
                                     style={styles.Textfields}
+                                    value={cpassword}
+                                    onChangeText={(e) => { setcpassword(e) }}
                                 ></TextInput>
                                 <Button
                                     style={{ marginBottom: 20, backgroundColor: "#f87c28" }}
                                     mode="contained"
+                                    onPress={() => Register()}
                                 >
                                     Signup
                                 </Button>
