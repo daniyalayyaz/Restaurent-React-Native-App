@@ -28,8 +28,8 @@ export default function Clientlogin() {
     const RedirectToHome = () => {
         navigation.navigate("Home");
     };
-    async function Login(e) {
-        e.preventDefault()
+    async function Login(event) {
+        // event.preventDefault()
         const user = {
             email,
             password,
