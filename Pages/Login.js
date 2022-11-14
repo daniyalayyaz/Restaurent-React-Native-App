@@ -38,18 +38,16 @@ export default function Clientlogin() {
 
         try {
             const result = (await axios.post('https://apinodejs.creativeparkingsolutions.com/api/user/login', user)).data;
-
-
             await AsyncStorage.setItem('currentuser', JSON.stringify(result.data));
 
             if (result.data[0].customer_Id != null) {
-                AsyncStorage.setItem('status', 'true');
+                await AsyncStorage.setItem('status', 'true');
             }
             else {
-                AsyncStorage.setItem('status', 'false');
+                await AsyncStorage.setItem('status', 'false');
             }
 
-            navigation.navigate("Home");
+            // navigation.navigate("Home");
 
             setemail('');
             setpassword('');

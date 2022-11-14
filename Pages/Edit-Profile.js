@@ -9,11 +9,21 @@ import {
     ScrollView,
     Dimensions,
     Platform,
-    SafeAreaView
+    SafeAreaView,
+    AsyncStorage
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
+
 
 export default function EditProfile() {
+
+    const getstatus = AsyncStorage.getItem("currentuser");
+    console.log(getstatus)
+    // const [name, setname] = useState(JSON.parse(localStorage.getItem("currentuser"))[0].name);
+    // const [email, setemail] = useState(JSON.parse(localStorage.getItem("currentuser"))[0].email);
+    // const [number, setnumber] = useState(JSON.parse(localStorage.getItem("currentuser"))[0].number);
     var width = Dimensions.get('window').width;
     var height = Dimensions.get('window').height;
     const navigation = useNavigation();
