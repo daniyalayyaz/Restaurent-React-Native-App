@@ -47,7 +47,7 @@ export default function Clientlogin() {
                 await AsyncStorage.setItem('status', 'false');
             }
 
-            // navigation.navigate("Home");
+            navigation.navigate("Home");
 
             setemail('');
             setpassword('');
