@@ -1,5 +1,5 @@
 import { Button, Card, Avatar, List } from 'react-native-paper';
-import { Text, View, Dimensions, SafeAreaView, ScrollView, Platform, Image, TouchableOpacity } from 'react-native';
+import { Text, View, Dimensions, SafeAreaView, ScrollView, Platform, Image, TouchableOpacity, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 
@@ -10,7 +10,9 @@ export default function Profile() {
     const RedirectToPastOrders = () => {
         navigation.navigate("Order-History");
     };
-    const RedirectToLogin = () => {
+    const RedirectToLogin = async () => {
+        await AsyncStorage.setItem('status', 'false');
+        await AsyncStorage.removeItem('currentuser');
         navigation.navigate("Login");
     };
     const RedirectToEditProfile = () => {
@@ -67,14 +69,14 @@ export default function Profile() {
                 </Card>
                 {settingmenu.map((idx, index) => (
                     <TouchableOpacity onPress={idx.path
-                } key={idx.key}>
-                <List.Item
-                    title={idx.title}
-                    left={props => <List.Icon {...props} icon={idx.icon} color='black' />}
-                />
-            </TouchableOpacity>
+                    } key={idx.key}>
+                        <List.Item
+                            title={idx.title}
+                            left={props => <List.Icon {...props} icon={idx.icon} color='black' />}
+                        />
+                    </TouchableOpacity>
                 ))}
-        </View>
+            </View>
         </SafeAreaView >
 
     );
