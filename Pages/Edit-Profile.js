@@ -19,17 +19,50 @@ import axios from "axios";
 
 export default function EditProfile() {
 
-    const getstatus = AsyncStorage.getItem("currentuser");
-    console.log(getstatus)
-    // const [name, setname] = useState(JSON.parse(localStorage.getItem("currentuser"))[0].name);
-    // const [email, setemail] = useState(JSON.parse(localStorage.getItem("currentuser"))[0].email);
-    // const [number, setnumber] = useState(JSON.parse(localStorage.getItem("currentuser"))[0].number);
+    const [name, setname] = useState("");
+    const [email, setemail] = useState("");
+    const [number, setnumber] = useState("");
+    const [id, setid] = useState("");
     var width = Dimensions.get('window').width;
     var height = Dimensions.get('window').height;
     const navigation = useNavigation();
     const RedirectToLogin = () => {
         navigation.navigate("Login");
     };
+
+    async function updatecustomer() {
+        const details = {
+            customer_Id: id,
+            name,
+            email,
+            number
+        }
+
+        try {
+            const result = await axios.post("http://localhost:5000/api/admin/myprofile", details).data;
+            console.log(result)
+            // navigation.navigate("Login")
+
+        } catch (error) {
+            alert(error);
+        }
+    }
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const check = await AsyncStorage.getItem("currentuser")
+                setname(JSON.parse(check)[0].name)
+                setemail(JSON.parse(check)[0].email)
+                setemail(JSON.parse(check)[0].email)
+                setnumber(JSON.parse(check)[0].number)
+                setid(JSON.parse(check)[0].customer_Id,)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, []);
 
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
@@ -63,32 +96,33 @@ export default function EditProfile() {
                         </Text>
                         <Divider style={{ marginBottom: 10 }} />
                         <View>
-                            <Text style={{ fontSize: 16, fontWeight: "bold", color: 'grey' }}>First Name</Text>
+                            <Text style={{ fontSize: 16, fontWeight: "bold", color: 'grey' }}> Name</Text>
                             <TextInput
-                                placeholder="John"
+                                placeholder="John Smith"
                                 style={styles.Textfields}
-                            ></TextInput>
-                            <Text style={{ fontSize: 16, fontWeight: "bold", color: 'grey' }}>Last Name</Text>
-                            <TextInput
-                                placeholder="Smith"
-                                style={styles.Textfields}
+                                value={name}
+                                onChangeText={(e) => { setname(e) }}
                             ></TextInput>
                             <Text style={{ fontSize: 16, fontWeight: "bold", color: 'grey' }}>Email</Text>
 
                             <TextInput
                                 placeholder="john@gmail.com"
                                 style={styles.Textfields}
+                                value={email}
                             ></TextInput>
                             <Text style={{ fontSize: 16, fontWeight: "bold", color: 'grey' }}>Phone</Text>
 
                             <TextInput
                                 placeholder="+55 67272 2672"
                                 style={styles.Textfields}
+                                value={number}
+                                onChangeText={(e) => { setnumber(e) }}
                             ></TextInput>
 
                             <Button
                                 style={{ marginBottom: 20, backgroundColor: "#f87c28" }}
                                 mode="contained"
+                                onPress={() => updatecustomer()}
                             >
                                 Save Changes
                             </Button>
