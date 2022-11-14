@@ -9,10 +9,12 @@ import {
     ScrollView,
     Dimensions,
     Platform,
-    SafeAreaView
+    SafeAreaView,
+    AsyncStorage
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState, useEffect } from 'react';
+import axios from "axios";
 
 
 export default function Clientlogin() {
@@ -29,18 +31,16 @@ export default function Clientlogin() {
         navigation.navigate("Home");
     };
     async function Login(event) {
-        // event.preventDefault()
         const user = {
             email,
             password,
         }
 
         try {
-            // setloading(true)
             const result = (await axios.post('https://apinodejs.creativeparkingsolutions.com/api/user/login', user)).data;
-            console.log(result.data)
 
-            AsyncStorage.setItem('currentuser', JSON.stringify(result.data));
+
+            await AsyncStorage.setItem('currentuser', JSON.stringify(result.data));
 
             if (result.data[0].customer_Id != null) {
                 AsyncStorage.setItem('status', 'true');
@@ -49,21 +49,14 @@ export default function Clientlogin() {
                 AsyncStorage.setItem('status', 'false');
             }
 
-
-            //   toast.success("Login Successfull")
-            setInterval(() => {
-                navigation.navigate("Home");
-            }, 2000);
-            // setloading(false)
+            navigation.navigate("Home");
 
             setemail('');
             setpassword('');
 
         }
         catch (error) {
-            console.log(error);
-            //   toast.warn("Invalid credentials")
-            // setloading(false)
+            alert("Invalid Credentials")
         }
 
     }
@@ -112,13 +105,13 @@ export default function Clientlogin() {
                                     placeholder="Email"
                                     style={styles.Textfields}
                                     value={email}
-                                    onChange={(e) => { setemail(e.target.value) }}
+                                    onChangeText={(e) => { setemail(e) }}
                                 ></TextInput>
                                 <TextInput
                                     placeholder="Password"
                                     style={styles.Textfields}
                                     value={password}
-                                    onChange={(e) => { setpassword(e.target.value) }}
+                                    onChangeText={(e) => { setpassword(e) }}
                                 ></TextInput>
 
                                 <Button
