@@ -9,17 +9,63 @@ import {
     ScrollView,
     Dimensions,
     Platform,
-    SafeAreaView
+    SafeAreaView,
+    AsyncStorage
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 export default function ChangePassword() {
+
+    const [email, setemail] = useState("");
+    const [id, setid] = useState("");
+    const [password, setpassword] = useState("")
+    const [new_password, setnew_password] = useState("")
+    const [cpassword, setcpassword] = useState("")
     var width = Dimensions.get('window').width;
     var height = Dimensions.get('window').height;
     const navigation = useNavigation();
     const RedirectToLogin = () => {
         navigation.navigate("Login");
     };
+
+
+    async function register(e) {
+        if (new_password === cpassword) {
+            const details = {
+                customer_Id: id,
+                email: email,
+                password,
+                new_password
+            }
+            try {
+                const result = await axios.post("http://localhost:5000/api/admin/changepassword", details).data;
+
+                setnew_password('')
+                setpassword('')
+                setcpassword('')
+
+            } catch (error) {
+                console.log(error);
+            }
+        } else {
+            alert("Password and confirm password is not same")
+        }
+    }
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const check = await AsyncStorage.getItem("currentuser")
+                setemail(JSON.parse(check)[0].email)
+                setid(JSON.parse(check)[0].customer_Id)
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        fetchData();
+    }, []);
 
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
@@ -57,23 +103,30 @@ export default function ChangePassword() {
                             <TextInput
                                 placeholder="Enter Old Password"
                                 style={styles.Textfields}
+                                value={password}
+                                onChangeText={(e) => { setpassword(e) }}
                             ></TextInput>
                             <Text style={{ fontSize: 16, fontWeight: "bold", color: 'grey' }}>New Password</Text>
                             <TextInput
                                 placeholder="Enter New Password"
                                 style={styles.Textfields}
+                                value={new_password}
+                                onChangeText={(e) => { setnew_password(e) }}
                             ></TextInput>
                             <Text style={{ fontSize: 16, fontWeight: "bold", color: 'grey' }}>Confirm New Password</Text>
 
                             <TextInput
                                 placeholder="Enter Confirm New Password"
                                 style={styles.Textfields}
+                                value={cpassword}
+                                onChangeText={(e) => { setcpassword(e) }}
                             ></TextInput>
 
 
                             <Button
                                 style={{ marginBottom: 20, backgroundColor: "#f87c28" }}
                                 mode="contained"
+                                onPress={() => register()}
                             >
                                 Update Password
                             </Button>
