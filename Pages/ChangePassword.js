@@ -39,12 +39,21 @@ export default function ChangePassword() {
                 password,
                 new_password
             }
+
+            // await axios.post(`http://localhost:5000/api/admin/changepassword`, details)
+            //     .then(res => {
+            //         console.log(res);
+            //         console.log(res.data)
+            //     })
+            //     .catch(error => console.log(error));
+
             try {
                 const result = await axios.post("http://localhost:5000/api/admin/changepassword", details).data;
 
-                setnew_password('')
-                setpassword('')
-                setcpassword('')
+                console.log(result)
+                // setnew_password('')
+                // setpassword('')
+                // setcpassword('')
 
             } catch (error) {
                 console.log(error);
