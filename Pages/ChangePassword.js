@@ -48,7 +48,7 @@ export default function ChangePassword() {
             //     .catch(error => console.log(error));
 
             try {
-                const result = await axios.post("http://localhost:5000/api/admin/changepassword", details).data;
+                const result = await axios.post("https://apinodejs.creativeparkingsolutions.com/api/admin/changepassword", details).data;
 
                 console.log(result)
                 // setnew_password('')
