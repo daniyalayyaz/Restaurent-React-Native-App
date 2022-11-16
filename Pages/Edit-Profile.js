@@ -39,12 +39,26 @@ export default function EditProfile() {
         }
 
         try {
-            const result = await axios.post("http://localhost:5000/api/admin/myprofile", details).data;
+            const result = await axios.post("https://apinodejs.creativeparkingsolutions.com/api/admin/myprofile", details).data;
             console.log(result)
+            update();
             // navigation.navigate("Login")
 
         } catch (error) {
             alert(error);
+        }
+    }
+
+    async function update() {
+        try {
+            const check = await AsyncStorage.getItem("currentuser")
+            setname(JSON.parse(check)[0].name)
+            setemail(JSON.parse(check)[0].email)
+            setemail(JSON.parse(check)[0].email)
+            setnumber(JSON.parse(check)[0].number)
+            setid(JSON.parse(check)[0].customer_Id,)
+        } catch (error) {
+            console.log(error);
         }
     }
 

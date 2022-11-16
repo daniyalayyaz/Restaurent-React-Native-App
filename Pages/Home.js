@@ -7,6 +7,7 @@ import axios from "axios";
 export default function Home() {
     const [category, setcategory] = React.useState([]);
     const [item, setItem] = React.useState([]);
+    // const [arr, setarr] = React.useState([]);
     var width = Dimensions.get('window').width;
     var height = Dimensions.get('window').height;
     const [searchQuery, setSearchQuery] = React.useState('');
@@ -93,14 +94,19 @@ export default function Home() {
         },
     ];
     const [currenttab, setCurrenttab] = React.useState(DATA[0].tab);
+    let arr = []
     const setcategoryId = (ID) => {
+
         for (var i = 0; i < item.length; i++) {
             if (item[i].category_id === ID) {
-                setItem(item[i])
-                console.log(item[i])
+                arr.push(item[i])
+
             }
         }
+        console.log(arr)
+        console.log(arr.length)
     }
+
 
     const navigation = useNavigation();
 
