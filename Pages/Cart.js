@@ -1,15 +1,163 @@
 import { Button, Card, IconButton, Searchbar } from 'react-native-paper';
-import { Text, View, Dimensions, SafeAreaView, FlatList, Platform, Image } from 'react-native';
+import { Text, View, Dimensions, SafeAreaView, FlatList, Platform, Image ,ToastAndroid} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-import { useState } from 'react'
+import { useState,useEffect} from 'react'
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from "axios";
 export default function Cart() {
+    const getstatus =AsyncStorage.getItem("status");
+    const [items, setItems] = useState([]);
+    const [charges, setcharges] = useState("")
+    const [address, setAddress] = useState([]);
+    async function remove(orderID, quantitys, price) {
+        const info = {
+          orderID,
+          quantitys,
+          price,
+          customer_Id: JSON.parse(await AsyncStorage.getItem("currentuser"))[0]
+            .customer_Id,
+        };
+    
+        try {
+          const data = (
+            await axios.post(
+              "http://localhost:5000/api/admin/updatecart",
+              info
+            )
+          ).data;
+          console.log(data.data);
+          update();
+          ToastAndroid.show("Quantity decrease");
+        } catch (error) {
+          console.log(error);
+          ToastAndroid.show("Failed! Try again later");
+        }
+      }
+      async function update() {
+        if (getstatus === "true") {
+          const user =  JSON.parse(await AsyncStorage.getItem("currentuser"))
+            .customer_Id;
+    
+          const temp = {
+            customer_Id: user,
+          };
+          try {
+            const data = (
+              await axios.post(
+                "http://localhost:5000/api/admin/getcartitems",
+                temp
+              )
+            ).data;
+            console.log(data.data);
+            setItems(data.data);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+      }
+      async function del(orderID) {
+        const info = {
+          orderID,
+        };
+    
+        try {
+          const data = (
+            await axios.post(
+              "http://localhost:5000/api/admin/updatecart",
+              info
+            )
+          ).data;
+          console.log(data.data);
+          update();
+          ToastAndroid.show("Item has been deleted");
+        } catch (error) {
+          console.log(error);
+          ToastAndroid.show("Failed! Try again later");
+        }
+      }
+      async function add(orderID, quantitys, price) {
+        const info = {
+          orderID,
+          quantitys,
+          price,
+          customer_Id:  JSON.parse(await AsyncStorage.getItem("currentuser"))
+            .customer_Id,
+        };
+    
+        try {
+          const data = (
+            await axios.post(
+              "http://localhost:5000/api/admin/updatecart",
+              info
+            )
+          ).data;
+          console.log(data.data);
+          update();
+          ToastAndroid.show("Quantity increase");
+        } catch (error) {
+          console.log(error);
+          ToastAndroid.show("Failed! Try again later");
+        }
+      }
+      useEffect(() => {
+        async function fetchData() {
+          const user = {
+            customer_Id: JSON.parse(await AsyncStorage.getItem("currentuser"))
+              .customer_Id,
+          };
+          const info = {
+            ID: JSON.parse(await AsyncStorage.getItem("currentuser"))[0].resturant_ID
+          }
+          try {
+            const data = await (
+              await axios.post(
+                "http://localhost:5000/api/user/getaddress",
+                user
+              )
+            ).data;
+    
+            const result = (await axios.post("http://localhost:5000/api/admin/phoneandaddress", info)).data;
+            setcharges(result.data[0]["charges"])
+            setAddress(data.data);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        fetchData();
+      }, []);
+    
+      useEffect(() => {
+        if (getstatus === "true") {
+          const user =   AsyncStorage.getItem("currentuser")[0]
+            .customer_Id;
+          async function fetchData() {
+            const temp = {
+              customer_Id: user,
+            };
+            try {
+              const data = (
+                await axios.post(
+                  "http://localhost:5000/api/admin/getcartitems",
+                  temp
+                )
+              ).data;
+              console.log(data.data);
+              setItems(data.data);
+            } catch (error) {
+              console.log(error);
+            }
+          }
+          fetchData();
+        }
+      }, []);
     const DATA = [
         {
             img: 'https://propakistani.pk/wp-content/uploads/2022/04/front-view-tasty-meat-burger-wit.jpg',
             title: 'Steak Burger',
-            price: '100 Rs'
+            price: '100 Rs',
+            quantitys:"7"
         },
         {
             img: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZxhqD_7ZHYjpxEzwYLu7srgRx4wr86s6kVQ&usqp=CAU',
@@ -85,18 +233,36 @@ export default function Cart() {
                                         <IconButton
                                             icon="plus-circle"
                                             size={24}
-                                            onPress={incrementCounter}
+                                            // onPress={incrementCounter}
+                                            onPress={() => {
+                                                add(
+                                                    item.orderitemid,
+                                                    item.Quantity + 1,
+                                                    item.price
+                                                  );
+                                              }} 
                                         />
                                         <Text style={{ fontSize: 24, fontWeight: 'bold' }}>{counter}</Text>
                                         <IconButton
                                             icon="minus-circle"
                                             size={24}
-                                            onPress={decrementCounter}
+                
+                                             onPressIn={() => {
+                                                remove(
+                                                  item.orderitemid,
+                                                  item.Quantity - 1,
+                                                  item.price
+                                                );
+                                              }} 
+                                            // onPress={decrementCounter} 
                                         />
                                         <View>
                                             <IconButton
                                                 icon="delete"
                                                 size={24}
+                                                onPress={() => {
+                                                    del(item.orderitemid);
+                                                  }} 
                                             />
                                         </View>
                                     </View>

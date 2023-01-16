@@ -1,8 +1,8 @@
 import { Button, Card, Avatar, List } from 'react-native-paper';
-import { Text, View, Dimensions, SafeAreaView, ScrollView, Platform, Image, TouchableOpacity, AsyncStorage } from 'react-native';
+import { Text, View, Dimensions, SafeAreaView, ScrollView, Platform, Image, TouchableOpacity} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function Profile() {
     var width = Dimensions.get('window').width;
     var height = Dimensions.get('window').height;

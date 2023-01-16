@@ -2,14 +2,40 @@ import { Button, Card, Avatar, List } from 'react-native-paper';
 import { Text, View, Dimensions, SafeAreaView, ScrollView, Platform, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
-
+import { useState,useEffect} from 'react'
+import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function OrderHistory() {
     var width = Dimensions.get('window').width;
     var height = Dimensions.get('window').height;
+    const [order, setOrder] = useState([]);
+    const [duplicateorders, setduplicateorders] = useState([]);
     const navigation = useNavigation();
     const RedirectToCart = () => {
         navigation.navigate("Cart");
     };
+   
+    useEffect(() => {
+        async function fetchData() {
+          const user = {
+            customer_Id: JSON.parse(await AsyncStorage.getItem("currentuser"))[0]
+              .customer_Id,
+          };
+          try {
+            const data = await (
+              await axios.post(
+                "http://localhost:5000/api/admin/getcart",
+                user
+              )
+            ).data;
+            setOrder(data.data);
+            setduplicateorders(data.data);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        fetchData();
+      }, []);
     const orderdetails = [
         {
             img: "https://cdn-food.tribune.com.pk/gallery/images/Fast%20Food%20Chains/KFC.jpg",
@@ -65,7 +91,7 @@ export default function OrderHistory() {
                                 <Button
                                     style={{ backgroundColor: "#f87c28", width: width / 3.5, fontSize: 8 }}
                                     mode="contained"
-                                    onPress={() => RedirectToHome()}
+                                    onPress={() => RedirectToCart()}
                                 >
                                     Reorder</Button>
                             </View>

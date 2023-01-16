@@ -2,11 +2,17 @@ import { Button, Card, IconButton, Searchbar } from 'react-native-paper';
 import { Text, View, Dimensions, SafeAreaView, FlatList, TouchableOpacity, Image, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from "axios";
-
+import { useState,useEffect} from 'react'
 export default function Home() {
     const [category, setcategory] = React.useState([]);
     const [item, setItem] = React.useState([]);
+    const [openclose, setopenclose] = useState([])
+    const [phone, setphone] = useState([])
+    const [resturant, setresturant] = useState([])
+    const [description, setdescription] = useState([])
+    const [address, setaddress] = useState([])
     // const [arr, setarr] = React.useState([]);
     var width = Dimensions.get('window').width;
     var height = Dimensions.get('window').height;
@@ -153,7 +159,65 @@ export default function Home() {
         }
         fetchData();
     }, []);
-
+    
+    
+    React.useEffect(() => {
+        async function fetchData() {
+          const detail = {
+            ID: JSON.parse(await AsyncStorage.getItem("currentuser"))[0].resturant_ID
+          }
+          try {
+            const data = (
+              await axios.post(
+                "http://localhost:5000/api/admin/phoneandaddress",
+                detail
+              )
+            ).data;
+    
+            const result = (
+              await axios.post(
+                "http://localhost:5000/api/admin/getresturantinfo",
+                detail
+              )
+            ).data;
+    
+            setresturant(result.data[0])
+            setdescription(result.data[0]['description'])
+            setphone(data.data[0]['phone'])
+            setaddress(data.data[0]['address'])
+    
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        fetchData()
+      }, [])
+    
+      React.useEffect(() => {
+        async function fetchData() {
+          const details = {
+            id: JSON.parse(await AsyncStorage.getItem("currentuser"))[0].resturant_ID,
+          };
+          try {
+            const data = await (
+              await axios.get("http://localhost:5000/api/admin/getallitems")
+            ).data;
+    
+            const result = await (
+              await axios.post(
+                "http://localhost:5000/api/superadmin/getopenclose",
+                details
+              )
+            ).data;
+            setopenclose(result.data[0]['online'])
+            setItem(data.data);
+            console.log(item);
+          } catch (error) {
+            console.log(error);
+          }
+        }
+        fetchData();
+      }, []);
     return (
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
             <View style={{ display: 'flex', flexDirection: 'column', height: height, backgroundColor: 'white', overflow: 'hidden' }}>
