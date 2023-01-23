@@ -24,7 +24,7 @@ export default function OrderHistory() {
           try {
             const data = await (
               await axios.post(
-                "http://localhost:5000/api/admin/getcart",
+                "https://apinodejs.creativeparkingsolutions.com/api/admin/getcart",
                 user
               )
             ).data;

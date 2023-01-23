@@ -137,7 +137,7 @@ export default function EditProfile() {
                             <Button
                                 style={{ marginBottom: 20, backgroundColor: "#f87c28" }}
                                 mode="contained"
-                                onPress={() => updatecustomer()}
+                                onPress={updatecustomer}
                             >
                                 Save Changes
                             </Button>

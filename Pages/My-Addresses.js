@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useState,useEffect } from "react";
+import axios  from "axios";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function MyAddresses() {
     var width = Dimensions.get('window').width;
@@ -40,7 +41,7 @@ export default function MyAddresses() {
           customer_Id: JSON.parse(await AsyncStorage.getItem("currentuser"))[0].customer_Id
         }
         try {
-          const data = (await axios.post('http://localhost:5000/api/user/addaddress', info)).data
+          const data = (await axios.post('https://apinodejs.creativeparkingsolutions.com/api/user/addaddress', info)).data
           console.log(data.data)
         
           updateAddress();
@@ -63,7 +64,7 @@ export default function MyAddresses() {
           customer_Id:JSON.parse(await AsyncStorage.getItem("currentuser"))[0].customer_Id
         }
         try {
-          const data = await (await axios.post('http://localhost:5000/api/user/getaddress', user)).data
+          const data = await (await axios.post('https://apinodejs.creativeparkingsolutions.com/api/user/getaddress', user)).data
           setAddress(data.data)
     
         } catch (error) {
@@ -76,7 +77,7 @@ export default function MyAddresses() {
         customer_Id: JSON.parse(await AsyncStorage.getItem("currentuser"))[0].customer_Id
       }
       try {
-        const data = await (await axios.post('http://localhost:5000/api/user/getaddress', user)).data
+        const data = await (await axios.post('https://apinodejs.creativeparkingsolutions.com/api/user/getaddress', user)).data
         setAddress(data.data)
 
       } catch (error) {

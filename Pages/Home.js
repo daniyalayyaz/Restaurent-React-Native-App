@@ -116,9 +116,9 @@ export default function Home() {
 
     const navigation = useNavigation();
 
-    const RedirectToDetailPage = () => {
-        navigation.navigate('Detail-Page')
-    }
+    // const RedirectToDetailPage = () => {
+    //     navigation.navigate('Detail-Page')
+    // }
     const RedirectToCart = () => {
         navigation.navigate('Cart')
     }
@@ -169,14 +169,14 @@ export default function Home() {
           try {
             const data = (
               await axios.post(
-                "http://localhost:5000/api/admin/phoneandaddress",
+                "https://apinodejs.creativeparkingsolutions.com/api/admin/phoneandaddress",
                 detail
               )
             ).data;
     
             const result = (
               await axios.post(
-                "http://localhost:5000/api/admin/getresturantinfo",
+                "https://apinodejs.creativeparkingsolutions.com/api/admin/getresturantinfo",
                 detail
               )
             ).data;
@@ -200,12 +200,12 @@ export default function Home() {
           };
           try {
             const data = await (
-              await axios.get("http://localhost:5000/api/admin/getallitems")
+              await axios.get("https://apinodejs.creativeparkingsolutions.com/api/admin/getallitems")
             ).data;
     
             const result = await (
               await axios.post(
-                "http://localhost:5000/api/superadmin/getopenclose",
+                "https://apinodejs.creativeparkingsolutions.com/api/superadmin/getopenclose",
                 details
               )
             ).data;
@@ -278,9 +278,12 @@ export default function Home() {
                         data={item}
                         numColumns={2}
                         renderItem={({ item, index }) => (
-                            <TouchableOpacity onPress={RedirectToDetailPage}>
+                            // console.log(item.Image),
+                            <TouchableOpacity onPress={() => navigation.navigate('Detail-Page', {
+                                itemId: item.ID,
+                              })}>
                                 <View style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', margin: 10, backgroundColor: '#f8f4fc', padding: 20, borderRadius: 12 }}>
-                                    <Image source={{ uri: item.Image }} style={{ height: height / 5, width: width / 3, borderRadius: 10 }} />
+                                    <Image source={{ uri: item.Image ? item.Image : 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png' }} style={{ height: height / 5, width: width / 3, borderRadius: 10 }} />
                                     <Text style={{ fontWeight: 'bold', fontSize: 16, color: 'black' }}>{item.Title}</Text>
                                     <Text>{item.Price}</Text>
                                 </View>

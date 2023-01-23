@@ -4,9 +4,14 @@ import { useNavigation } from '@react-navigation/native';
 import * as React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState,useEffect} from 'react'
-export default function DetailPage() {
+import axios from "axios";
+export default function DetailPage({  route }) {
+
     const getstatus =AsyncStorage.getItem("status");
     const [items, setItems] = useState([]);
+    const [images, setimages] = useState([]);
+    const [item, setItem] = React.useState([]);
+    const [selectedItem, setselectedItem] = React.useState({});
     const [charges, setcharges] = useState("")
     const [address, setAddress] = useState([]);
     const [show, setShow] = useState(false);
@@ -20,6 +25,22 @@ export default function DetailPage() {
     if (counter < 1) {
         decrementCounter = () => setCounter(1);
     }
+    React.useEffect(() => {
+      async function fetchData() {
+          try {
+              const data = await (
+                  await axios.get(
+                      "https://apinodejs.creativeparkingsolutions.com/api/admin/getallitems"
+                  )
+              ).data;
+              // console.log(data.data)
+              setItem(data.data);
+          } catch (error) {
+              console.log(error);
+          }
+      }
+      fetchData();
+  }, []);
     const navigation = useNavigation();
     const RedirectToCart = () => {
         navigation.navigate("Cart");
@@ -35,8 +56,8 @@ export default function DetailPage() {
     
         console.log(cartDetail)
         try {
-          // http://localhost:5000
-          const result = await axios.post('http://localhost:5000/api/admin/cart', cartDetail)
+          // https://apinodejs.creativeparkingsolutions.com
+          const result = await axios.post('https://apinodejs.creativeparkingsolutions.com/api/admin/cart', cartDetail)
           console.log(result)
           alert("Item has been added to cart")
           setQuantity('')
@@ -59,12 +80,12 @@ export default function DetailPage() {
           try {
             const data = await (
               await axios.post(
-                "http://localhost:5000/api/user/getaddress",
+                "https://apinodejs.creativeparkingsolutions.com/api/user/getaddress",
                 user
               )
             ).data;
     
-            const result = (await axios.post("http://localhost:5000/api/admin/phoneandaddress", info)).data;
+            const result = (await axios.post("https://apinodejs.creativeparkingsolutions.com/api/admin/phoneandaddress", info)).data;
             setcharges(result.data[0]["charges"])
             setAddress(data.data);
           } catch (error) {
@@ -85,7 +106,7 @@ export default function DetailPage() {
             try {
               const data = (
                 await axios.post(
-                  "http://localhost:5000/api/admin/getcartitems",
+                  "https://apinodejs.creativeparkingsolutions.com/api/admin/getcartitems",
                   temp
                 )
               ).data;
@@ -110,7 +131,7 @@ export default function DetailPage() {
         try {
           const data = (
             await axios.post(
-              "http://localhost:5000/api/admin/updatecart",
+              "https://apinodejs.creativeparkingsolutions.com/api/admin/updatecart",
               info
             )
           ).data;
@@ -134,7 +155,7 @@ export default function DetailPage() {
         try {
           const data = (
             await axios.post(
-              "http://localhost:5000/api/admin/updatecart",
+              "https://apinodejs.creativeparkingsolutions.com/api/admin/updatecart",
               info
             )
           ).data;
@@ -157,7 +178,7 @@ export default function DetailPage() {
           try {
             const data = (
               await axios.post(
-                "http://localhost:5000/api/admin/getcartitems",
+                "https://apinodejs.creativeparkingsolutions.com/api/admin/getcartitems",
                 temp
               )
             ).data;
@@ -168,7 +189,25 @@ export default function DetailPage() {
           }
         }
       }
+      const id1 = route.params.itemId;
+      console.log(id1);
+    
+      // console.log(item);
+     var iteems= item.filter((element) => {
+      return id1 === element.ID;
+       
+       
+
+      });
+      setimages(iteems[0]['title'])
+      // console.log(iteems[0])
+      // setselectedItem(iteems[0])
+      // setselectedItem(
+        
+      // ));
     return (
+      console.log(selectedItem),
+// console.log(item),
         <SafeAreaView style={{ paddingTop: Platform.OS === 'android' ? 40 : 0 }}>
             <View style={{ display: 'flex', flexDirection: 'column', height: height, justifyContent: 'space-between', backgroundColor: 'white', overflow: 'hidden' }}>
                 <ScrollView>
@@ -176,10 +215,11 @@ export default function DetailPage() {
                     <View>
                         <Image
                             style={{ height: height / 2, width: width, marginBottom: 20 }}
-                            source={{ uri: 'https://propakistani.pk/wp-content/uploads/2022/04/front-view-tasty-meat-burger-wit.jpg' }}
+                            source={{  uri:images ? selectedItem.Image : 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/330px-No-Image-Placeholder.svg.png' }}
                         />
-                        <Text style={{ fontSize: 24, fontWeight: 'bold', paddingLeft: 10 }}>Steak Burger</Text>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', paddingLeft: 10, color: 'grey' }}>1000 Rs</Text>
+                        {/* <Text style={{ fontSize: 24, fontWeight: 'bold', paddingLeft: 10 }}>{item.Title}</Text> */}
+                        <Text style={{ fontSize: 24, fontWeight: 'bold', paddingLeft: 10 }}>{selectedItem['Title']}</Text>
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', paddingLeft: 10, color: 'grey' }}>{selectedItem.Price}Rs</Text>
 
                         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
                             <IconButton
@@ -210,7 +250,7 @@ export default function DetailPage() {
                         </View>
 
                         <Text style={{ fontSize: 16, fontWeight: 'bold', padding: 20 }}>Description</Text>
-                        <Text style={{ fontSize: 16, color: 'grey', padding: 20, textAlign: 'justify' }}>"Juicy, big, loaded with toppings of my choice." "High quality beef medium to well with cheese and bacon on a multigrain bun." "A huge single or triple burger with all the fixings, cheese, lettuce, tomato, onions and special sauce or mayonnaise!"</Text>
+                        <Text style={{ fontSize: 16, color: 'grey', padding: 20, textAlign: 'justify' }}>{iteems.Description}</Text>
                     </View>
                     <View style={{ margin: 20 }}>
                         <Button icon="cart" mode="contained" style={{ backgroundColor: '#f87c28' }} onPress={RedirectToCart}>
